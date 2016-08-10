@@ -23,11 +23,23 @@
 		<property name="maxInactiveIntervalInSeconds"></property>
 	</bean>
 	
-	<!-- redis 配置 -->
-	<bean class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
-		<property name="hostName" value="192.168.46.128" />
-		<property name="port" value="6379" />
-		<property name="password" value="admin"></property>
+	<!-- redis pool配置 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxActive" value="30000" />
+		<property name="maxIdle" value="600" />
+		<property name="maxWait" value="15000" />
+		<property name="testOnBorrow" value="true" />
 	</bean>
+	 
+	<!-- redis connection factory 配置 -->
+	<bean id="jedisConnectionFactory" class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+	    <property name="hostName" value="192.168.46.128" />
+	    <property name="port" value="6379" />
+	    <property name="password" value="admin" />
+	    <property name="timeout" value="1800" />
+	    <property name="poolConfig" ref="jedisPoolConfig" />
+	    <property name="usePool" value="true" />
+	</bean>
+	
 
 </beans>                    
